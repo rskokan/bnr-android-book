@@ -28,6 +28,13 @@ public class QuizActivity extends Activity {
 
 		mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
 		updateQuestion();
+		mQuestionTextView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				nextQuestion();
+			}
+		});
 
 		mTrueButton = (Button) findViewById(R.id.true_button);
 		mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -50,27 +57,31 @@ public class QuizActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-				updateQuestion();
+				nextQuestion();
 			}
 		});
 	}
-	
+
+	private void nextQuestion() {
+		mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+		updateQuestion();
+	}
+
 	private void updateQuestion() {
 		int question = mQuestionBank[mCurrentIndex].getQuestion();
 		mQuestionTextView.setText(question);
 	}
-	
+
 	private void checkAnswer(boolean userPressedTrue) {
 		boolean answerIsTrue = mQuestionBank[mCurrentIndex].isTrueQuestion();
 		int messageResId;
-		
+
 		if (userPressedTrue == answerIsTrue) {
 			messageResId = R.string.correct_toast;
 		} else {
 			messageResId = R.string.incorrect_toast;
 		}
-		
+
 		Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
 	}
 
