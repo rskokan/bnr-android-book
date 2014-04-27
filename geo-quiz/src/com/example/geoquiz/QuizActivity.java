@@ -23,6 +23,7 @@ public class QuizActivity extends Activity {
 
 	private static final String TAG = "QuizActivity";
 	private static final String KEY_INDEX = "index";
+	private static final String KEY_IS_CHEATER = "is_cheater";
 	public static final String EXTRA_ANSWER_IS_TRUE = "com.example.geoquiz.answer_is_true";
 	public static final String EXTRA_ANSWER_SHOWN = "com.example.geoquiz.answer_shown";
 
@@ -40,6 +41,7 @@ public class QuizActivity extends Activity {
 
 		if (savedInstanceState != null) {
 			mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+			mIsCheater = savedInstanceState.getBoolean(KEY_IS_CHEATER, false);
 		}
 
 		mCheatButton = (Button) findViewById(R.id.cheat_button);
@@ -94,24 +96,29 @@ public class QuizActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				mCurrentIndex--;
-				if (mCurrentIndex < 0) {
-					mCurrentIndex = mQuestionBank.length - 1;
-				}
-				updateQuestion();
+				previousQuestion();
 			}
 		});
+	}
+	
+	private void previousQuestion() {
+		mCurrentIndex--;
+		if (mCurrentIndex < 0) {
+			mCurrentIndex = mQuestionBank.length - 1;
+		}
+		updateQuestion();
+		mIsCheater = false;
 	}
 
 	private void nextQuestion() {
 		mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
 		updateQuestion();
+		mIsCheater = false;
 	}
 
 	private void updateQuestion() {
 		int question = mQuestionBank[mCurrentIndex].getQuestion();
 		mQuestionTextView.setText(question);
-		mIsCheater = false;
 	}
 
 	private void checkAnswer(boolean userPressedTrue) {
@@ -171,6 +178,7 @@ public class QuizActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		Log.d(TAG, "onSaveInstanceState(Bundle) called");
 		outState.putInt(KEY_INDEX, mCurrentIndex);
+		outState.putBoolean(KEY_IS_CHEATER, mIsCheater);
 	}
 
 	@Override
