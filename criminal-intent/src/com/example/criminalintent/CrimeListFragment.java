@@ -34,6 +34,7 @@ public class CrimeListFragment extends ListFragment {
 		Intent i = new Intent(getActivity(), CrimeActivity.class);
 		i.putExtra(CrimeFragment.ARGS_CRIME_ID, crime.getId());
 		startActivity(i);
+		Log.d(TAG, crime.getTitle() + " was clicked");
 	}
 
 	private class CrimeAdapter extends ArrayAdapter<Crime> {
@@ -72,7 +73,5 @@ public class CrimeListFragment extends ListFragment {
 		super.onResume();
 		((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
 	}
-	
-	
 
 }
