@@ -31,10 +31,10 @@ public class CrimeListFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Crime crime = ((CrimeAdapter) getListAdapter()).getItem(position);
-		Intent i = new Intent(getActivity(), CrimeActivity.class);
+		Log.d(TAG, crime.getTitle() + " was clicked");
+		Intent i = new Intent(getActivity(), CrimePagerActivity.class);
 		i.putExtra(CrimeFragment.ARGS_CRIME_ID, crime.getId());
 		startActivity(i);
-		Log.d(TAG, crime.getTitle() + " was clicked");
 	}
 
 	private class CrimeAdapter extends ArrayAdapter<Crime> {
