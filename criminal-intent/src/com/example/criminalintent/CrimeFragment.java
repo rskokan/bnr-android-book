@@ -1,6 +1,7 @@
 package com.example.criminalintent;
 
 import java.text.DateFormat;
+import java.util.UUID;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,16 +18,27 @@ import android.widget.EditText;
 
 public class CrimeFragment extends Fragment {
 	
+	public static final String ARGS_CRIME_ID = "com.example.criminalintent.crime_id";
+	
 	private Crime mCrime;
-	private EditText mTextField;
+	private EditText mTitleEditField;
 	private Button mDateButton;
 	private CheckBox mSolvedCheckBox;
 	private DateFormat mDateFormat;
+	
+	public static CrimeFragment newInstance(UUID crimeId) {
+		Bundle args = new Bundle();
+		args.putSerializable(ARGS_CRIME_ID, crimeId);
+		CrimeFragment fragment = new CrimeFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mCrime = new Crime();
+		UUID crimeId = (UUID) getArguments().getSerializable(ARGS_CRIME_ID);
+		mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
 		mDateFormat = android.text.format.DateFormat.getDateFormat(getActivity());
 	}
 
@@ -35,8 +47,9 @@ public class CrimeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_crime, container, false);
 		
-		mTextField = (EditText) v.findViewById(R.id.crime_title);
-		mTextField.addTextChangedListener(new TextWatcher() {
+		mTitleEditField = (EditText) v.findViewById(R.id.crime_title);
+		mTitleEditField.setText(mCrime.getTitle());
+		mTitleEditField.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
