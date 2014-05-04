@@ -19,6 +19,7 @@ public class CrimeLab {
 	private CrimeLab(Context appContext) {
 		mAppContext = appContext;
 		try {
+			mSerializer = new CriminalIntentJSONSerializer(appContext, FILENAME);
 			mCrimes = mSerializer.loadCrimes();
 		} catch (Exception e) {
 			Log.e(TAG, "Error loading crime:", e);
@@ -29,8 +30,6 @@ public class CrimeLab {
 	public static CrimeLab get(Context appContext) {
 		if (sCrimeLab == null) {
 			sCrimeLab = new CrimeLab(appContext);
-			sCrimeLab.mSerializer = new CriminalIntentJSONSerializer(
-					appContext, FILENAME);
 		}
 
 		return sCrimeLab;

@@ -117,9 +117,9 @@ public class CrimeListFragment extends ListFragment {
 			Crime crime = new Crime();
 			CrimeLab.get(getActivity()).addCrime(crime);
 			Intent i = new Intent(getActivity(), CrimePagerActivity.class);
-			// i.putExtra(CrimeFragment.ARGS_CRIME_ID, crime.getId());
+			 i.putExtra(CrimeFragment.ARGS_CRIME_ID, crime.getId());
 			startActivity(i);
-			startActivityForResult(i, 0);
+//			startActivityForResult(i, 0);
 			return true;
 		case R.id.menu_item_show_subtitle:
 			if (getActivity().getActionBar().getSubtitle() == null) {
